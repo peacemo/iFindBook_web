@@ -24,7 +24,8 @@ public class ReadingServ extends HttpServlet {
         resp.setContentType("application/json;charset=utf-8");
 
 //        String account = req.getParameter("account");
-        String uid = req.getParameter("uid");
+        String uid = req.getParameter("data");
+        System.out.println(uid);
 
         BooksDao booksDao = new BooksDao();
         ObjectMapper mapper = new ObjectMapper();

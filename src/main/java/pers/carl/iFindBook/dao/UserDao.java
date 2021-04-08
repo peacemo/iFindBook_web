@@ -9,7 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserDao {
-    public boolean select(User user) {
+    public User select(User user) {
+        User resUser = new User();
         final Connection connection = DBUtils.getConnection();
         final String sql = "select * from user where account = ? and pwd = ?";
         try {
@@ -17,10 +18,17 @@ public class UserDao {
             preparedStatement.setString(1, user.getAccount());
             preparedStatement.setString(2, user.getPwd());
             ResultSet resultSet = preparedStatement.executeQuery();
-            return resultSet.next();
+            while(resultSet.next()) {
+                resUser.setId(resultSet.getInt("id"));
+                resUser.setNickname(resultSet.getString("nickname"));
+                resUser.setAccount(resultSet.getString("account"));
+                resUser.setPwd(resultSet.getString("pwd"));
+                resUser.setEmail(resultSet.getString("email"));
+            }
+            return resUser;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return resUser;
         } finally {
             DBUtils.closeConnection();
         }

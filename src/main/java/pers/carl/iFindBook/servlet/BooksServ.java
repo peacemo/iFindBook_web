@@ -26,8 +26,8 @@ public class BooksServ extends HttpServlet {
 
 //        String account = req.getParameter("account");
 //        String pwd = req.getParameter("pwd");
-        String table = req.getParameter("data");
-        System.out.println(table);
+        String data = req.getParameter("data");
+        System.out.println(data);
 
 //        System.out.println(account + "---" +pwd);
 //
@@ -35,7 +35,7 @@ public class BooksServ extends HttpServlet {
 //        User user = new User(-1, account,null, pwd, null);
         ObjectMapper mapper = new ObjectMapper();
         ResponseBody responseBody = new ResponseBody();
-        ArrayList<Book> books = booksDao.selectAll(table);
+        ArrayList<Book> books = booksDao.selectAll(data);
 
         if (books != null) {
             responseBody.setResponseCode(200);
