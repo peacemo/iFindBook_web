@@ -18,6 +18,7 @@ public class Test extends HttpServlet {
          * this is the Test Unit, put code here, and visit /test
          */
         BooksDao booksDao = new BooksDao();
-        booksDao.selectReading("1");
+//        booksDao.selectReading("1");
+        booksDao.insertFav("2","1");
     }
 }

@@ -127,4 +127,78 @@ public class BooksDao {
         }
     }
 
+    public ArrayList<Book> selectRead(String uid) {
+        ArrayList<Book> books = new ArrayList<>();
+
+        final Connection connection = DBUtils.getConnection();
+        final String sql = "select books.*\n" +
+                "from `books`, `user`, `read`\n" +
+                "where books.id = read.b_id\n" +
+                "and user.id = read.u_id\n" +
+                "and user.id = " + uid;
+
+        try {
+            final Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+
+            while(resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                String author = resultSet.getString("author");
+                String imgUrl = resultSet.getString("img_url");
+                String shortDesc = resultSet.getString("short_desc");
+                String longDesc = resultSet.getString("long_desc");
+                Book book = new Book(id, name, author, imgUrl, shortDesc, longDesc);
+                books.add(book);
+            }
+
+            System.out.println(books);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            String s = objectMapper.writeValueAsString(books);
+            System.out.println(s);
+
+            return books;
+
+        } catch (SQLException | JsonProcessingException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            DBUtils.closeConnection();
+        }
+    }
+
+    public boolean insertFav(String uid, String bid) {
+        final Connection connection = DBUtils.getConnection();
+        final String sql = "insert into fav values(?,?)";
+        try {
+            final PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, uid);
+            preparedStatement.setString(2, bid);
+            preparedStatement.executeUpdate();
+            return preparedStatement.getUpdateCount() != 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            DBUtils.closeConnection();
+        }
+    }
+
+    public boolean insertReading(String uid, String bid) {
+        final Connection connection = DBUtils.getConnection();
+        final String sql = "insert into reading values(?,?)";
+        try {
+            final PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, uid);
+            preparedStatement.setString(2, bid);
+            preparedStatement.executeUpdate();
+            return preparedStatement.getUpdateCount() != 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            DBUtils.closeConnection();
+        }
+    }
 }
