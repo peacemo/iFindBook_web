@@ -19,6 +19,7 @@ public class Test extends HttpServlet {
          */
         BooksDao booksDao = new BooksDao();
 //        booksDao.selectReading("1");
-        booksDao.insertFav("2","1");
+        booksDao.insertFav("2", "1");
+        booksDao.selectByKeyWord("%幸%");
     }
 }

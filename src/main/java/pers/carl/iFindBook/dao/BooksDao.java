@@ -168,6 +168,43 @@ public class BooksDao {
         }
     }
 
+    public ArrayList<Book> selectByKeyWord(String keyWord) {
+        ArrayList<Book> books = new ArrayList<>();
+
+        final Connection connection = DBUtils.getConnection();
+        final String sql = "select * from books where name like ? or author like  ?";
+
+        try {
+            final PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, keyWord);
+            preparedStatement.setString(2, keyWord);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                String author = resultSet.getString("author");
+                String imgUrl = resultSet.getString("img_url");
+                String shortDesc = resultSet.getString("short_desc");
+                String longDesc = resultSet.getString("long_desc");
+                Book book = new Book(id, name, author, imgUrl, shortDesc, longDesc);
+                books.add(book);
+            }
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            String s = objectMapper.writeValueAsString(books);
+            System.out.println(s);
+
+            return books;
+
+        } catch (SQLException | JsonProcessingException e) {
+            e.printStackTrace();
+            return books;
+        } finally {
+            DBUtils.closeConnection();
+        }
+    }
+
     public boolean insertFav(String uid, String bid) {
         final Connection connection = DBUtils.getConnection();
         final String sql = "insert into fav values(?,?)";
