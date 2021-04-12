@@ -41,9 +41,15 @@ public class ReadingServ extends HttpServlet {
 //            mapper.writeValue(resp.getWriter(), new ArrayList<Book>());
 //        }
         if (type.equals("alter")) {
+
             String uid = req.getParameter("uid");
             String bid = req.getParameter("bid");
             if (booksDao.insertReading(uid, bid)) {
+                try {
+                    booksDao.deleteRead(uid, bid);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 responseBody.setResponseCode(200);
                 responseBody.setResponseData("success");
             } else {
@@ -51,7 +57,9 @@ public class ReadingServ extends HttpServlet {
                 responseBody.setResponseData("failed");
             }
             mapper.writeValue(resp.getWriter(), responseBody);
-        } else {
+
+        } else if (type.equals("select")){
+
             String uid = req.getParameter("data");
             ArrayList<Book> books = booksDao.selectReading(uid);
             if (books != null) {
@@ -63,6 +71,7 @@ public class ReadingServ extends HttpServlet {
                 responseBody.setResponseData("fail");
                 mapper.writeValue(resp.getWriter(), new ArrayList<Book>());
             }
+
         }
     }
 }

@@ -238,4 +238,64 @@ public class BooksDao {
             DBUtils.closeConnection();
         }
     }
+
+    public boolean deleteReading(String uid, String bid) {
+        final Connection connection = DBUtils.getConnection();
+        final String sql = "delete from reading where u_id = " + uid + " and b_id = " + bid + ";";
+        try {
+            final Statement statement = connection.createStatement();
+            statement.executeUpdate(sql);
+            return statement.getUpdateCount() != 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            DBUtils.closeConnection();
+        }
+    }
+
+    public boolean deleteRead(String uid, String bid) {
+        final Connection connection = DBUtils.getConnection();
+        final String sql = "delete from `read` where u_id = " + uid + " and b_id = " + bid + ";";
+        try {
+            final Statement statement = connection.createStatement();
+            statement.executeUpdate(sql);
+            return statement.getUpdateCount() != 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            DBUtils.closeConnection();
+        }
+    }
+
+    public boolean insertRead(String uid, String bid) {
+//        final Connection connection = DBUtils.getConnection();
+//        final String sql = "insert into `read` values(" + uid + "," + bid + ")";
+//        try {
+//            final Statement statement = connection.createStatement();
+//            statement.executeUpdate(sql);
+//            return statement.getUpdateCount() != 0;
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            return false;
+//        } finally {
+//            DBUtils.closeConnection();
+//        }
+        final Connection connection = DBUtils.getConnection();
+        final String sql = "insert into `read` values(?,?)";
+        try {
+            final PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, uid);
+            preparedStatement.setString(2, bid);
+            preparedStatement.executeUpdate();
+            return preparedStatement.getUpdateCount() != 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            DBUtils.closeConnection();
+        }
+    }
+
 }

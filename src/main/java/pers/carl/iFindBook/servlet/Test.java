@@ -19,7 +19,10 @@ public class Test extends HttpServlet {
          */
         BooksDao booksDao = new BooksDao();
 //        booksDao.selectReading("1");
-        booksDao.insertFav("2", "1");
         booksDao.selectByKeyWord("%幸%");
+        String uid = "1", bid = "2";
+//        String sql = "insert into read values(" + uid + "," + bid + ")";
+        booksDao.insertRead(uid, bid);
+//        System.out.println(sql);
     }
 }

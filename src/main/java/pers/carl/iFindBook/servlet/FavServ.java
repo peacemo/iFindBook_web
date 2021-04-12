@@ -25,6 +25,7 @@ public class FavServ extends HttpServlet {
 
 //        String account = req.getParameter("account");
         String type = req.getParameter("type");
+        System.out.println(type);
 
         BooksDao booksDao = new BooksDao();
         ObjectMapper mapper = new ObjectMapper();
