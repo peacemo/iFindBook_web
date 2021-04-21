@@ -13,7 +13,7 @@ public class DBUtils {
     public static Connection getConnection() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            final String url = "jdbc:mysql://127.0.0.1:3306/ifindbook";
+            final String url = "jdbc:mysql://127.0.0.1:3306/iFindBook";
             final String usrName = "root";
             final String pwd = "123";
             connection = DriverManager.getConnection(url, usrName, pwd);
